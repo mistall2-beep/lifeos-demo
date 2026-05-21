@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LifeOS — Demo Project</title>
-<meta name="description" content="자료수집 → 인물진단 → 질문지까지.">
+<meta name="description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LifeOS — Demo Project">
-<meta property="og:description" content="자료수집 → 인물진단 → 질문지까지">
+<meta property="og:description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
 <meta property="og:url" content="https://mistall2-beep.github.io/lifeos-demo/">
 <meta property="og:image" content="https://mistall2-beep.github.io/lifeos-demo/og.png">
 <meta property="og:image:width" content="1200">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LifeOS — Demo Project">
-<meta name="twitter:description" content="자료수집 → 인물진단 → 질문지까지">
+<meta name="twitter:description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
 <meta name="twitter:image" content="https://mistall2-beep.github.io/lifeos-demo/og.png">
 <style>
   :root{
@@ -225,6 +225,29 @@
   .composer .clip{font-size:17px; color:var(--sub);}
   .composer input{flex:1; border:1px solid var(--line); border-radius:9px; padding:10px 13px; font-size:13.5px;
     font-family:inherit; color:var(--text); background:#FAFBFB;}
+  /* ---- type edit (report) ---- */
+  .editbtn{margin-left:auto; background:#fff; border:1px solid var(--main); color:var(--main);
+    font-size:12px; font-weight:700; padding:5px 12px; border-radius:8px; cursor:pointer;}
+  .tstate{font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px;
+    background:var(--main-l); color:var(--main-d); margin-left:6px;}
+  .tstate.locked{background:#FBEFD9; color:var(--amber);}
+  .typecur{display:flex; gap:8px; margin-bottom:14px;}
+  .tcur{font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:8px; background:#F3F4F5; color:var(--text);}
+  .tcur.main{background:var(--main); color:#fff;}
+  .whybox{margin-top:13px; font-size:12.5px; line-height:1.65; color:var(--sub);
+    border-left:3px solid var(--line); padding:2px 0 2px 12px;}
+  .whybox b{color:var(--text);}
+  .editpanel{display:none; margin-top:14px; border:1px solid var(--line); border-radius:12px;
+    padding:16px; background:#FAFBFB;}
+  .editpanel.open{display:block;}
+  .eprow{display:flex; gap:14px;}
+  .epf{flex:1;}
+  .epf label{display:block; font-size:11.5px; color:var(--sub); font-weight:700; margin-bottom:5px;}
+  .epf select{width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px;
+    font-size:13.5px; font-family:inherit; color:var(--text); background:#fff;}
+  .epnote{font-size:11.5px; color:var(--amber); margin:12px 0;}
+  .epbtns{display:flex; gap:8px;}
+  .epbtns .btn{font-size:12.5px; padding:8px 16px;}
   /* ---- print (배포용 PDF) ---- */
   @media print{
     @page{ size:A4; margin:12mm; }
@@ -242,6 +265,7 @@
     .chat{ break-inside:auto !important; page-break-inside:auto !important; }
     .composer{ display:none !important; }
     .morebtn{ display:none !important; }
+    .editbtn, .editpanel{ display:none !important; }
     .pcard:hover, .q:hover, .ckr:hover{ background:#fff; }
   }
 </style>
@@ -280,7 +304,7 @@
       <div class="card pcard" id="openReport">
         <div class="av">김</div>
         <div class="info">
-          <div class="nm">김순자 님 <small>1948년생 · 여</small></div>
+          <div class="nm">김순일 님 <small>1948년생 · 여</small></div>
           <div class="meta">자료 23건 · 핵심 인물 5명 · 마지막 활동 2시간 전</div>
           <div class="next">다음 할 일 — <b>학창시절 자료 보충 요청</b></div>
           <div class="ai-tip">⌁ AI: 빈 영역 2곳이 채워지면 완성율 +14%p 예상</div>
@@ -310,9 +334,9 @@
 
       <!-- project 3 -->
       <div class="card pcard">
-        <div class="av">박</div>
+        <div class="av">최</div>
         <div class="info">
-          <div class="nm">박명자 님 <small>1945년생 · 여</small></div>
+          <div class="nm">최명희 님 <small>1945년생 · 여</small></div>
           <div class="meta">자료 31건 · 핵심 인물 7명 · 마지막 활동 3일 전</div>
           <div class="next">다음 할 일 — <b>인터뷰 질문지 최종 검토</b></div>
           <div class="ai-tip">⌁ AI: 질문지 28문항 생성 완료 · 인터뷰 준비됨</div>
@@ -324,7 +348,7 @@
         </div>
       </div>
     </div>
-    <div class="note">※ LifeOS 1단계 목업 — 예시 데이터입니다. 카드(김순자 님)를 클릭하면 인물진단 리포트로 이동합니다.</div>
+    <div class="note">※ LifeOS 1단계 목업 — 예시 데이터입니다. 카드(김순일 님)를 클릭하면 인물진단 리포트로 이동합니다.</div>
   </div>
 
   <!-- ============ CHAT (STEP 1) ============ -->
@@ -436,11 +460,11 @@
     <div class="card rhead">
       <div class="av">김</div>
       <div style="flex:1">
-        <h1>김순자 님 인물진단 리포트</h1>
+        <h1>김순일 님 인물진단 리포트</h1>
         <div class="sub">1948년생 (만 77세) · 여 · 경남 통영 출생 · 프로젝트 시작 12일째</div>
         <div class="tags">
-          <span class="tag main">가족헌신형 (주)</span>
-          <span class="tag line">극복형 (부)</span>
+          <span class="tag main" id="tagMain">가족헌신형 (주)</span>
+          <span class="tag line" id="tagSub">극복형 (부)</span>
           <span class="tag">현재 단계 · 인물 진단</span>
           <span class="tag">유형 신뢰도 높음</span>
         </div>
@@ -475,15 +499,44 @@
       </div>
     </div>
 
-    <!-- type analysis -->
-    <div class="card sec">
-      <h2><span class="dot"></span>인생 서사 유형</h2>
+    <!-- type analysis (editable) -->
+    <div class="card sec" id="typeSec">
+      <h2><span class="dot"></span>인생 서사 유형
+        <span class="tstate" id="typeState">AI 추정 · 잠정</span>
+        <button class="editbtn" id="typeEditBtn">유형 수정</button>
+      </h2>
+      <div class="typecur">
+        <span class="tcur main" id="curMain">주 · 가족헌신형</span>
+        <span class="tcur" id="curSub">부 · 극복형</span>
+      </div>
       <div class="typebar"><div class="lab"><b>가족헌신형</b><span>72%</span></div><div class="tb"><i style="width:72%"></i></div></div>
       <div class="typebar"><div class="lab"><b>극복형</b><span>58%</span></div><div class="tb"><i class="sec2" style="width:58%"></i></div></div>
       <div class="typebar"><div class="lab"><b>관계형</b><span>41%</span></div><div class="tb"><i class="sec2" style="width:41%;opacity:.6"></i></div></div>
+      <div class="whybox"><b>AI 추정 근거</b> — 가족·관계·가치관 단서가 풍부, ‘남편 별세 후 네 자녀 양육’ 핵심 사건, 감정어 ‘헌신·그리움’ 빈도 높음.</div>
       <div style="margin-top:12px;font-size:13.5px;line-height:1.7;background:var(--main-l);padding:13px 15px;border-radius:10px;">
         <b>추천 서사 방향</b> — “가족을 위한 헌신과, 그 속에서 자신을 다시 일으킨 회복의 이야기”.
         남편을 잃은 뒤 네 자녀를 지켜낸 중년기를 중심 축으로, 통영 피란민의 딸로 자란 유년기를 시대 배경으로 엮는 구조를 권장합니다.
+      </div>
+      <div class="editpanel" id="typeEdit">
+        <div class="eprow">
+          <div class="epf"><label>주(主) 유형</label>
+            <select id="selMain">
+              <option>성취형</option><option>관계형</option><option>극복형</option>
+              <option>기록형</option><option>시대증언형</option><option selected>가족헌신형</option>
+            </select>
+          </div>
+          <div class="epf"><label>부(副) 유형</label>
+            <select id="selSub">
+              <option>없음</option><option>성취형</option><option>관계형</option><option selected>극복형</option>
+              <option>기록형</option><option>시대증언형</option><option>가족헌신형</option>
+            </select>
+          </div>
+        </div>
+        <div class="epnote">⌁ 작가가 확정하면 AI가 자동으로 유형을 바꾸지 않습니다(이후엔 제안만).</div>
+        <div class="epbtns">
+          <button class="btn" id="typeSave">확정 · 잠금</button>
+          <button class="btn ghost" id="typeCancel">취소</button>
+        </div>
       </div>
     </div>
 
@@ -582,7 +635,7 @@
     <div class="card rhead">
       <div class="av">김</div>
       <div style="flex:1">
-        <h1>김순자 님 인터뷰 질문지 <span style="color:var(--sub);font-weight:600;font-size:15px;">(초안)</span></h1>
+        <h1>김순일 님 인터뷰 질문지 <span style="color:var(--sub);font-weight:600;font-size:15px;">(초안)</span></h1>
         <div class="sub">가족헌신형 서사 기반 · AI 자동 생성 · 작가가 자유롭게 추가·수정·재배치할 수 있습니다</div>
         <div class="tags">
           <span class="tag main">초안 v1</span>
@@ -682,6 +735,27 @@
   document.getElementById('toQuestions').addEventListener('click', function(){ showView('questions'); window.scrollTo(0,0); });
   document.getElementById('backBtn2').addEventListener('click', function(){ showView('report'); window.scrollTo(0,0); });
   document.getElementById('backBtn3').addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
+
+  // type edit (report)
+  (function(){
+    var sec = document.getElementById('typeSec'); if(!sec) return;
+    var panel = document.getElementById('typeEdit');
+    document.getElementById('typeEditBtn').addEventListener('click', function(){ panel.classList.toggle('open'); });
+    document.getElementById('typeCancel').addEventListener('click', function(){ panel.classList.remove('open'); });
+    document.getElementById('typeSave').addEventListener('click', function(){
+      var m = document.getElementById('selMain').value;
+      var s = document.getElementById('selSub').value;
+      document.getElementById('curMain').textContent = '주 · ' + m;
+      document.getElementById('tagMain').textContent = m + ' (주)';
+      var curSub = document.getElementById('curSub'), tagSub = document.getElementById('tagSub');
+      if(s === '없음'){ curSub.style.display = 'none'; tagSub.style.display = 'none'; }
+      else { curSub.style.display = ''; tagSub.style.display = '';
+             curSub.textContent = '부 · ' + s; tagSub.textContent = s + ' (부)'; }
+      var st = document.getElementById('typeState');
+      st.textContent = '작가 확정 · 잠금 🔒'; st.classList.add('locked');
+      panel.classList.remove('open');
+    });
+  })();
   function showView(v){
     document.querySelectorAll('.view').forEach(function(el){ el.classList.toggle('active', el.id===v); });
     document.querySelectorAll('.tab').forEach(function(el){ el.classList.toggle('active', el.dataset.v===v); });
